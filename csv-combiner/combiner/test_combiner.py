@@ -3,7 +3,6 @@ import os
 import unittest
 from unittest import mock
 from io import StringIO
-import sys
 import combiner
 
 path = './test_data/'
@@ -24,7 +23,7 @@ output_rows = [expected_header,
                ['', '', '', '', '6', 'test3.csv']]
 
 
-class MyTestCase(unittest.TestCase):
+class TestCombiner(unittest.TestCase):
 
     def setUp(self):
         for file, rows in test_files.items():
@@ -32,12 +31,9 @@ class MyTestCase(unittest.TestCase):
                 writer = csv.writer(csv_file, dialect='excel')
                 writer.writerows(rows)
 
-
     def tearDown(self):
         for file in test_files.keys():
             os.remove(path + file)
-
-
 
     @mock.patch('os.path.isfile')
     @mock.patch('sys.exit')
@@ -59,7 +55,8 @@ class MyTestCase(unittest.TestCase):
         assert mock_exit.called
 
     def test_arg(self):
-        file_in, file_out = combiner.arg(['--input', path + 'test1.csv', path + 'test2.csv', path + 'test3.csv', '--output', output_file])
+        file_in, file_out = combiner.arg(
+            ['--input', path + 'test1.csv', path + 'test2.csv', path + 'test3.csv', '--output', output_file])
         self.assertListEqual(file_in, file_list)
         self.assertEqual(file_out, output_file)
 
@@ -70,11 +67,10 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(combiner.combine(file_list, output_file), 6)
         os.remove(output_file)
 
-
     def test_main(self):
-        expected_output = '\n'.join([str(row) for row in output_rows])
         with mock.patch('sys.stdout', new=StringIO()) as fake_out:
-            combiner.main(['--input', path + 'test1.csv', path + 'test2.csv', path + 'test3.csv', '--output', output_file])
+            combiner.main(
+                ['--input', path + 'test1.csv', path + 'test2.csv', path + 'test3.csv', '--output', output_file])
             for i in range(6):
                 self.assertEqual(fake_out.getvalue().split('\n')[i], str(output_rows[i]))
         os.remove(output_file)

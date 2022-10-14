@@ -3,16 +3,6 @@ import csv
 import os
 import sys
 
-path = './test_data/'
-test_files = {
-    'test1.csv': [['Blouses', 'Satchels'], [1, 1]],
-    'test2.csv': [['Watches', 'Wallets', 'Purses', 'Satchels'], [2] * 4, [3] * 4],
-    'test3.csv': [['Purses'], [4], [5], [6]]
-}
-for file, rows in test_files.items():
-    with open(path + file, 'w', newline='') as csv_file:
-        writer = csv.writer(csv_file, dialect='excel')
-        writer.writerows(rows)
 
 def path_verify(file, _type):
     """
@@ -77,7 +67,7 @@ def combine(file_list, output_file):
     A method could combine multiple csv files into one csv file and print its contents to stdout.
     :param file_list: List of file paths waiting for combination.
     :param output_file: The output csv file path.
-    :return: A csv file contains all rows from file list and a new column referring to the original file name.
+    :return: The number of rows of combined file.
     """
     col_names = header(file_list)
     cnt = 0
