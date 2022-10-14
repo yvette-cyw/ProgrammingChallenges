@@ -69,6 +69,7 @@ class TestCombiner(unittest.TestCase):
         os.remove(output_file)
 
     def test_main(self):
+        """Test the stdout line by line"""
         with mock.patch('sys.stdout', new=StringIO()) as fake_out:
             combiner.main(
                 ['--input', path + 'test1.csv', path + 'test2.csv', path + 'test3.csv', '--output', output_file])
