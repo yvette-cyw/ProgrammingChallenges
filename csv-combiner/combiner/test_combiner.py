@@ -26,6 +26,7 @@ output_rows = [expected_header,
 class TestCombiner(unittest.TestCase):
 
     def setUp(self):
+        """Set up test files"""
         for file, rows in test_files.items():
             with open(path + file, 'w', newline='') as csv_file:
                 writer = csv.writer(csv_file, dialect='excel')
